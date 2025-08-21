@@ -3,16 +3,16 @@
 echo "Starting Metabase OSS..."
 
 # Check if Docker is running
-if ! docker info > /dev/null 2>&1; then
-    echo "Docker is not running. Starting Docker..."
-    open -a Docker
-    
-    # Wait for Docker to start
-    echo "Waiting for Docker to start..."
-    while ! docker info > /dev/null 2>&1; do
-        sleep 2
-    done
-    echo "Docker started!"
+if ! docker info >/dev/null 2>&1; then
+	echo "Docker is not running. Starting Docker..."
+	open -a Docker
+
+	# Wait for Docker to start
+	echo "Waiting for Docker to start..."
+	while ! docker info >/dev/null 2>&1; do
+		sleep 2
+	done
+	echo "Docker started!"
 fi
 
 # Stop and remove existing container if it exists
@@ -25,9 +25,9 @@ docker pull metabase/metabase:latest
 
 # Find available port starting from 3000
 PORT=3000
-while lsof -i :$PORT > /dev/null 2>&1; do
-    echo "Port $PORT is in use, trying next port..."
-    PORT=$((PORT + 1))
+while lsof -i :$PORT >/dev/null 2>&1; do
+	echo "Port $PORT is in use, trying next port..."
+	PORT=$((PORT + 1))
 done
 echo "Using port $PORT for Metabase"
 
