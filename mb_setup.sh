@@ -23,9 +23,17 @@ docker rm metabase 2>/dev/null
 echo "Pulling latest Metabase image..."
 docker pull metabase/metabase:latest
 
+# Find available port starting from 3000
+PORT=3000
+while lsof -i :$PORT > /dev/null 2>&1; do
+    echo "Port $PORT is in use, trying next port..."
+    PORT=$((PORT + 1))
+done
+echo "Using port $PORT for Metabase"
+
 # Start Metabase
 echo "Starting Metabase container..."
-docker run -d -p 3000:3000 --name metabase metabase/metabase
+docker run -d -p $PORT:3000 --name metabase metabase/metabase
 
 # Wait for Metabase to be ready
 echo "Waiting for Metabase to start..."
@@ -33,4 +41,4 @@ sleep 10
 
 # Open in browser
 echo "Opening Metabase in your browser..."
-open http://localhost:3000
+open http://localhost:$PORT
